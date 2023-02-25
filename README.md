@@ -1,4 +1,4 @@
-# AWS Lamba via CLJS
+# AWS Lambda via CLJS
 
 Answering [this post](https://clojureverse.org/t/lambda-function-in-clojurescript-how-where/9791/1) by showing an AWS Lambda example.
 
