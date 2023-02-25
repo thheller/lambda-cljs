@@ -1,11 +1,17 @@
 # AWS Lamba via CLJS
 
+Answering [this post](https://clojureverse.org/t/lambda-function-in-clojurescript-how-where/9791/1) by showing an AWS Lambda example.
+
 Clone repo and run
 ```
 sh build.sh
 ```
 
+This creates a `dist/lambda.zip`.
+
 Deploy `dist/lambda.zip` to AWS. I'm sure you can do this via the command line somehow. I just created the AWS Lambda in their web interface and uploaded it manually for testing. I know next to nothing about AWS, just want to demonstrate the CLJS bits.
+
+For this example I had to bump the default runtime timeout. 3sec didn't seem enough. The `@mozilla/readability` part seems to take about 5sec to run. 10sec timeout should be plenty. Don't know why it is so slow, it isn't in the CLJS bits.
 
 Let's go over what `build.sh` does. You can use anything to perform these steps, but this seemed easiest to explain.
 
@@ -18,7 +24,7 @@ Create an empty `dist` directory just so we don't copy files we don't need.
 ```
 npx shadow-cljs release lambda --config-merge '{:output-to "dist/index.js"}'
 ```
-Tell shadow-cljs to make a release build for the `:lambda` build. Using config-merge here, so it outputs the file directly to the `dist` folder.
+Tell shadow-cljs to make a release build for the `:lambda` build. Using config-merge here, so it outputs the file directly to the `dist` folder. Could do this via the build config directly too.
 
 ```
 cp package.json package-lock.json dist
@@ -26,7 +32,7 @@ cd dist
 npm install --omit=dev
 ```
 
-Ensure that all dependencies we may need are installed in the `dist` directory itself. the `--omit=dev` will not install `devDependencies`. Meaning that `shadow-cljs` itself won't be in the `dist` dir since it is not required.
+Ensure that all dependencies we may need are installed in the `dist` directory itself. the `--omit=dev` will not install `devDependencies`. Meaning that `shadow-cljs` itself won't be in the `dist` dir since it is not required. Makes the zip significantly smaller.
 
 ```
 rm package-lock.json
