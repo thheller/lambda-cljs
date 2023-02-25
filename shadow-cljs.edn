@@ -1,0 +1,16 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src/dev"
+  "src/main"
+  "src/test"]
+
+ :dependencies
+ []
+
+ :builds
+ {:lambda
+  {:target :node-library
+   :output-to "out/index.js"
+   :exports {:handler my.company.readability/handler}
+   :devtools {:enabled false}
+   }}}
